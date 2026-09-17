@@ -11,11 +11,6 @@ source:
 
 build:
   number: 0
-  script:
-    - cmake -B build -G Ninja ${CMAKE_ARGS} -DHDR_HISTOGRAM_BUILD_PROGRAMS=OFF -DHDR_HISTOGRAM_INSTALL_STATIC=OFF -DHDR_HISTOGRAM_INSTALL_SHARED=ON .  # [unix]
-    - cmake -B build -G Ninja %CMAKE_ARGS% -DHDR_HISTOGRAM_BUILD_PROGRAMS=OFF -DHDR_HISTOGRAM_INSTALL_STATIC=OFF -DHDR_HISTOGRAM_INSTALL_SHARED=ON -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=ON .  # [win]
-    - cmake --build build
-    - cmake --install build
   run_exports:
     - {{ pin_subpackage('hdrhistogram-c', max_pin='x.x.x') }}
 
