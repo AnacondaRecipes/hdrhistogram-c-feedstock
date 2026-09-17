@@ -27,6 +27,8 @@ requirements:
     - ninja-base
   host:
     - zlib {{ zlib }}
+  run:
+    - zlib
 
 test:
   requires:
