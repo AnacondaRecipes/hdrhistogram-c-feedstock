@@ -1,0 +1,56 @@
+{% set name = "hdrhistogram-c" %}
+{% set version = "0.11.10" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/HdrHistogram/HdrHistogram_c/archive/refs/tags/{{ version }}.tar.gz
+  sha256: c3b06d077e680d112abf9f027d8a558f1176ee4a55a7c523577833391d8c2249
+
+build:
+  number: 0
+  run_exports:
+    - {{ pin_subpackage('hdrhistogram-c', max_pin='x.x.x') }}
+
+requirements:
+  build:
+    - {{ stdlib('c') }}
+    - {{ compiler('c') }}
+    - cmake
+    - ninja-base
+  host:
+    - zlib {{ zlib }}
+  run:
+    - zlib
+
+test:
+  requires:
+    - pkg-config  # [unix]
+  commands:
+    - test -f $PREFIX/include/hdr/hdr_histogram.h         # [unix]
+    - test -f $PREFIX/lib/libhdr_histogram${SHLIB_EXT}    # [unix]
+    - test -f $PREFIX/lib/pkgconfig/hdr_histogram.pc      # [unix]
+    - test -f $PREFIX/lib/cmake/hdr_histogram/hdr_histogram-config.cmake  # [unix]
+    - pkg-config --cflags hdr_histogram                   # [unix]
+    - if not exist %LIBRARY_INC%\hdr\hdr_histogram.h exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\hdr_histogram.dll exit 1    # [win]
+    - if not exist %LIBRARY_LIB%\hdr_histogram.lib exit 1    # [win]
+
+about:
+  home: https://github.com/HdrHistogram/HdrHistogram_c
+  license: BSD-2-Clause OR CC0-1.0
+  license_family: BSD
+  license_file:
+    - LICENSE.txt
+    - COPYING.txt
+  summary: C port of the HdrHistogram
+  description: |
+    HdrHistogram_c: 'C' port of High Dynamic Range (HDR) Histogram
+  doc_url: https://github.com/HdrHistogram/HdrHistogram_c
+  dev_url: https://github.com/HdrHistogram/HdrHistogram_c
+
+extra:
+  recipe-maintainers:
+    - pavelzw
